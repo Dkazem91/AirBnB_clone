@@ -11,5 +11,5 @@
 ### Examples:
 
 ### Authors:
-* Daniel Kazemian
-* Andrew Suh
+* Daniel Kazemian <274@holbertonschool.com>
+* Andrew Suh <307@holbertonschool.com>
