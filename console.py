@@ -61,6 +61,19 @@ class HBNBCommand(cmd.Cmd):
         del storage.all()[keyValue]
         storage.save()
 
+    def do_all(self, line):
+        if not len(line):
+            for obj in storage.all().values():
+                print(obj)
+            return
+        strings = line.split()
+        if strings[0] not in HBNBCommand.classes:
+            print("** class doesn't exist **")
+            return
+        for obj in storage.all().values():
+            if strings[0] == type(obj).__name__:
+                print(obj)
+
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
