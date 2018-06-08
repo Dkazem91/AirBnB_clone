@@ -8,20 +8,26 @@ class BaseModel:
         """
         This class contains basic info such as uuid, created at, and updated at times
         """
-
         def __init__(self):
                 self.id = str(uuid4())
                 self.created_at = datetime.now()
-                self.updated_at = self.created_at
+                self.updated_at = datetime.now()
 
         def __str__(self):
+                """
+                returns a string
+                """
                 return "[{}] ({}) {}".format(self.__class__.__name__, self.id, self.__dict__)
 
         def save(self):
+                """
+                changes updated_at time
+                """
                 self.updated_at = datetime.now()
 
         def to_dict(self):
-                self.__dict__["__class__"] = self.__class__.__name__
-                self.__dict__["created_at"] = str(self.created_at.isoformat())
-                self.__dict__["updated_at"] = str(self.updated_at.isoformat())
-                return self.__dict__
+                copy_of = dict(self.__dict__)
+                copy_of["__class__"] = self.__class__.__name__
+                copy_of["created_at"] = self.created_at.isoformat()
+                copy_of["updated_at"] = self.updated_at.isoformat()
+                return copy_of
