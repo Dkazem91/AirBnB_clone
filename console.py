@@ -7,6 +7,7 @@ from models import storage
 
 class HBNBCommand(cmd.Cmd):
     prompt = '(hbnb)'
+    classes = ["BaseModel"]
 
     def do_quit(self, line):
         "Quit command to exit the program"
@@ -15,7 +16,6 @@ class HBNBCommand(cmd.Cmd):
     do_EOF = do_quit
 
     def do_create(self, line):
-        key = ["BaseModel"]
         if not len(line):
             print("** class name missing **")
         else:
@@ -27,12 +27,11 @@ class HBNBCommand(cmd.Cmd):
                 print("** class doesn't exist **")
 
     def do_show(self, line):
-        classes = ["BaseModel"]
         if not len(line):
             print("** class name missing **")
             return
         strings = line.split()
-        if strings[0] not in classes:
+        if strings[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
         if len(strings) == 1:
@@ -45,7 +44,22 @@ class HBNBCommand(cmd.Cmd):
             print(storage.all()[keyValue])
 
     def do_destroy(self, line):
-        return
+        if not len(line):
+            print("** class name missing **")
+            return
+        strings = line.split()
+        if strings[0] not in HBNBCommand.classes:
+            print("** class doesn't exist **")
+            return
+        if len(strings) == 1:
+            print("** instance id missing **")
+            return
+        keyValue = strings[0] + '.' + strings[1]
+        if keyValue not in storage.all().keys():
+            print("** no instance found **")
+            return
+        del storage.all()[keyValue]
+        storage.save()
 
 
 if __name__ == '__main__':
