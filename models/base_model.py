@@ -11,10 +11,12 @@ class BaseModel:
         def __init__(self, *args, **kwargs):
                 if kwargs:
                         for key, value in kwargs.items():
-                                if key == "id":
-                                        self.id = value
-                                if key == "created_at" or key == "updated_at":
-                                        self.created_at = datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%f")
+                                if key == "created_at":
+                                        value = datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%f" )
+                                if key == "updated_at":
+                                        value = datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%f" )
+                                if key != "__class__":
+                                        setattr(self, key, value)
                 else:
                         self.id = str(uuid4())
                         self.created_at = datetime.now()
