@@ -2,12 +2,19 @@
 """entry point of the command interpreter"""
 import cmd
 from models.base_model import BaseModel
+from models.user import User
 from models import storage
+from shlex import split
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.Place import Place
+from models.Review import Review
 
 
 class HBNBCommand(cmd.Cmd):
     prompt = '(hbnb)'
-    classes = ["BaseModel"]
+    classes = {"BaseModel", "User", "State", "City", "Amenity", "Place", "Review"}
 
     def do_quit(self, line):
         "Quit command to exit the program"
@@ -16,21 +23,23 @@ class HBNBCommand(cmd.Cmd):
     do_EOF = do_quit
 
     def do_create(self, line):
-        if not len(line):
-            print("** class name missing **")
-        else:
-            try:
-                newObject = eval(line)()
-                print(newObject.id)
-                newObject.save()
-            except:
-                print("** class doesn't exist **")
-
-    def do_show(self, line):
+        """creates an object"""
         if not len(line):
             print("** class name missing **")
             return
-        strings = line.split()
+        if line not in HBNBCommand.classes:
+            print("**class doesn't exist**")
+            return
+        newObject = eval(line)()
+        print(newObject.id)
+        newObject.save()
+
+    def do_show(self, line):
+        """shows an object"""
+        if not len(line):
+            print("** class name missing **")
+            return
+        strings = split(line)
         if strings[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
@@ -44,10 +53,11 @@ class HBNBCommand(cmd.Cmd):
             print(storage.all()[keyValue])
 
     def do_destroy(self, line):
+        """deletes an object"""
         if not len(line):
             print("** class name missing **")
             return
-        strings = line.split()
+        strings = split(line)
         if strings[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
@@ -62,11 +72,12 @@ class HBNBCommand(cmd.Cmd):
         storage.save()
 
     def do_all(self, line):
+        """prints all"""
         if not len(line):
             for obj in storage.all().values():
                 print(obj)
             return
-        strings = line.split()
+        strings = split(line)
         if strings[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
@@ -74,6 +85,36 @@ class HBNBCommand(cmd.Cmd):
             if strings[0] == type(obj).__name__:
                 print(obj)
 
+    def do_update(self, line):
+        """updates an object"""
+        if not len(line):
+            print("** class name missing **")
+            return
+        strings = split(line)
+        for string in strings:
+            if string.startswith('"') and string.endswith('"'):
+                string = string[1:-1]
+        if strings[0] not in HBNBCommand.classes:
+            print("** class doesn't exist **")
+            return
+        if len(strings) == 1:
+            print("** instance id missing **")
+            return
+        keyValue = strings[0] + '.' + strings[1]
+        if keyValue not in storage.all().keys():
+            print("** no instance found **")
+            return
+        if len(strings) == 2:
+            print("** attribute name missing **")
+            return
+        if len(strings) == 3:
+            print("** value missing **")
+            return
+        setattr(storage.all()[keyValue], strings[2], strings[3])
+
+    def emptyline(self):
+        """passes"""
+        pass
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
