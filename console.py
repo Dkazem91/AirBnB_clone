@@ -64,9 +64,23 @@ class HBNBCommand(cmd.Cmd):
                         print("** no instance found **")
 
         def do_all(self, arg):
+                # all_list = []
+                if len(arg) == 0:
+                        # for values in storage.all().values():
+                        #         all_list.append(str(values))
+                        # print(all_list)
+                        print([str(values) for values in storage.all().values()])
+                        return
                 strings = arg.split()
                 if strings[0] not in dir(models.base_model):
                         print("** class doesn't exist **")
+                        return
+                else:
+                        # for values in storage.all().values():
+                        #         if strings[0] == type(values).__name__:
+                        #                 all_list.append(values.__str__)
+                        # print(all_list)
+                        print([str(values) for values in storage.all().values() if strings[0] == type(values).__name__])
                         return
 
 
