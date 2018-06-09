@@ -38,7 +38,7 @@ class FileStorage:
                         with open(FileStorage.__file_path, 'r') as open_file:
                                 temp = json.load(open_file)
                                 for key, value in temp.items():
-                                        self.new(eval(value["__class__"])(**value))
+                                        self.new(eval(temp[key]["__class__"])(**value))
                                         
                 except:
                         pass
