@@ -2,11 +2,13 @@
 """entry point of the command interpreter"""
 import cmd
 import models
+from shlex import split
 from models import storage
 from models.base_model import BaseModel
 
 class HBNBCommand(cmd.Cmd):
         prompt = "(hbnb) "
+        set_classes = {"Amenity", "BaseModel", "City", "Place", "Review", "State", "User"}
 
         def do_quit(self, arg):
                 """Quit command to exit the program"""
@@ -19,7 +21,7 @@ class HBNBCommand(cmd.Cmd):
                 if len(arg) == 0:
                         print("** class name missing **")
                         return
-                if arg not in dir(models.base_model):
+                if arg not in HBNBCommand.set_classes:
                         print("** class doesn't exist **")
                         return
                 else:
@@ -34,7 +36,7 @@ class HBNBCommand(cmd.Cmd):
                         print("** class name missing **")
                         return
                 strings = arg.split()
-                if strings[0] not in dir(models.base_model):
+                if strings[0] not in HBNBCommand.set_classes:
                         print("** class doesn't exist **")
                         return
                 if len(strings) < 2:
@@ -51,7 +53,7 @@ class HBNBCommand(cmd.Cmd):
                         print("** class name missing **")
                         return
                 strings = arg.split()
-                if strings[0] not in dir(models.base_model):
+                if strings[0] not in HBNBCommand.set_classes:
                         print("** class doesn't exist **")
                         return
                 if len(strings) < 2:
@@ -68,7 +70,7 @@ class HBNBCommand(cmd.Cmd):
                         print([value for key, value in storage.all().items()])
                         return
                 strings = arg.split()
-                if strings[0] not in dir(models.base_model):
+                if strings[0] not in HBNBCommand.set_classes:
                         print("** class doesn't exist **")
                         return
                 else:
@@ -83,8 +85,8 @@ class HBNBCommand(cmd.Cmd):
                 if len(arg) == 0:
                         print("** class name missing **")
                         return
-                strings = arg.split()
-                if strings[0] not in dir(models.base_model):
+                strings = split(arg)
+                if strings[0] not in HBNBCommand.set_classes:
                         print("** class doesn't exist **")
                         return
                 elif len(strings) < 2:
@@ -96,17 +98,15 @@ class HBNBCommand(cmd.Cmd):
                 elif len(strings) < 4:
                         print("** value missing **")
                         return
-                try:
-                        search = strings[0] + "." + strings[1]
-                        for key, value in storage.all().items():
-                                if key == search:
-                                        value.strings[2] = strings[3]
-                                        value.save()
-                                        return
 
-                                
-                except:
-                        print("** no instance found **")
+                search = strings[0] + "." + strings[1]
+                for key, value in storage.all().items():
+                        if key == search:
+                                setattr(value, strings[2], strings[3])
+                                value.save()
+                                return
+                print("** no instance found **")
+                return
                 
 
 
