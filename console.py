@@ -75,6 +75,34 @@ class HBNBCommand(cmd.Cmd):
                         print([value for key, value in storage.all().items() if strings[0] == type(value).__name__])
                         return
 
+        def do_update(self, arg):
+                """
+                Updates a specific instance saved in file.json
+                Usage: update <class name> <id> <attribute name> "<attribute value>"
+                """
+                if len(arg) == 0:
+                        print("** class name missing **")
+                        return
+                strings = arg.split()
+                if strings[0] not in dir(models.base_model):
+                        print("** class doesn't exist **")
+                        return
+                elif len(strings) < 2:
+                        print("** instance id missing **")
+                        return
+                elif len(strings) < 3:
+                        print("** attribute name missing **")
+                        return
+                elif len(strings) < 4:
+                        print("** value missing **")
+                        return
+                try:
+                        if storage.all()[strings[0] + "." + strings[1]]:
+                                pass
+                except:
+                        print("** no instance found **")
+                
+
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
