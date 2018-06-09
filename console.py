@@ -16,8 +16,12 @@ class HBNBCommand(cmd.Cmd):
 
         def do_create(self, arg):
                 """Create an instance"""
-                if arg not in HBNBCommand.list_keys:
+                if len(arg) == 0:
                         print("** class name missing **")
+                        return
+                if arg not in HBNBCommand.list_keys:
+                        print("** class doesn't exist **")
+                        return
                 else:
                         try:
                                 new = eval(arg)()
@@ -31,16 +35,19 @@ class HBNBCommand(cmd.Cmd):
                         return
                 strings = arg.split()
                 if strings[0] not in HBNBCommand.list_keys:
-                        print("** class name missing **")
+                        print("** class doesn't exist **")
                         return
                 if len(strings) < 2:
                         print("** instance id missing **")
                         return
                 try:
-                        if storage.all()[string[0] + "." + string[1]]:
+                        print(storage.all()[strings[0] + "." + strings[1]])
                                 
                 except:
                         print("** no instance found **")
+
+        def do_destroy(self, arg):
+                
                 
                 
 
