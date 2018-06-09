@@ -2,6 +2,10 @@
 """serializes instances to JSON file, deserializes JSON file to instances"""
 import json
 from models.base_model import BaseModel
+from models.user import User
+from models.place import Place
+from models.review import Review
+
 
 class FileStorage:
 

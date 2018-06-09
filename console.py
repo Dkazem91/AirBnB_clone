@@ -5,6 +5,9 @@ import models
 from shlex import split
 from models import storage
 from models.base_model import BaseModel
+from models.user import User
+from models.place import Place
+from models.review import Review
 
 class HBNBCommand(cmd.Cmd):
         prompt = "(hbnb) "
@@ -108,6 +111,8 @@ class HBNBCommand(cmd.Cmd):
                 print("** no instance found **")
                 return
                 
+        def emptyline(self):
+                pass
 
 
 if __name__ == '__main__':
