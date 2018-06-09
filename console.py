@@ -26,13 +26,21 @@ class HBNBCommand(cmd.Cmd):
                         except:
                                 print("** class doesn't exist **")
         def do_show(self, arg):
-                if not len(line):
+                if len(arg) == 0:
                         print("** class name missing **")
                         return
                 strings = arg.split()
                 if strings[0] not in HBNBCommand.list_keys:
                         print("** class name missing **")
                         return
+                if len(strings) < 2:
+                        print("** instance id missing **")
+                        return
+                try:
+                        if storage.all()[string[0] + "." + string[1]]:
+                                
+                except:
+                        print("** no instance found **")
                 
                 
 
