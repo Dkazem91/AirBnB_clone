@@ -1,6 +1,7 @@
 #!/user/bin/python3
 """entry point of the command interpreter"""
 import cmd
+import models
 from models import storage
 from models.base_model import BaseModel
 
@@ -34,7 +35,7 @@ class HBNBCommand(cmd.Cmd):
                         print("** class name missing **")
                         return
                 strings = arg.split()
-                if strings[0] not in HBNBCommand.list_keys:
+                if strings[0] not in dir(models.base_model):
                         print("** class doesn't exist **")
                         return
                 if len(strings) < 2:
@@ -47,7 +48,7 @@ class HBNBCommand(cmd.Cmd):
                         print("** no instance found **")
 
         def do_destroy(self, arg):
-                
+                pass
                 
                 
 
