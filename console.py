@@ -120,6 +120,18 @@ class HBNBCommand(cmd.Cmd):
     def default(self, line):
         """defaults"""
         strings = line.split('.')
+        if strings[0] not in HBNBCommand.classes:
+            print("*** Unknown syntax: {}".format(line))
+            return
+        if strings[1] == "all()":
+            self.do_all(strings[0])
+        if strings[1] == "count()":
+            count = 0
+            for obj in storage.all().values():
+                if strings[0] == type(obj).__name__:
+                    count += 1
+            print(count)
+            return
 
 
 if __name__ == '__main__':
