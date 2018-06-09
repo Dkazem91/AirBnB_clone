@@ -97,8 +97,14 @@ class HBNBCommand(cmd.Cmd):
                         print("** value missing **")
                         return
                 try:
-                        if storage.all()[strings[0] + "." + strings[1]]:
-                                pass
+                        search = strings[0] + "." + strings[1]
+                        for key, value in storage.all().items():
+                                if key == search:
+                                        value.strings[2] = strings[3]
+                                        value.save()
+                                        return
+
+                                
                 except:
                         print("** no instance found **")
                 
