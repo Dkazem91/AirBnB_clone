@@ -7,8 +7,8 @@ from models.user import User
 from models.state import State
 from models.city import City
 from models.amenity import Amenity
-from models.Place import Place
-from models.Review import Review
+from models.place import Place
+from models.review import Review
 
 class FileStorage:
     __file_path = "file.json"
