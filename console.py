@@ -8,8 +8,8 @@ from shlex import split
 from models.state import State
 from models.city import City
 from models.amenity import Amenity
-from models.Place import Place
-from models.Review import Review
+from models.place import Place
+from models.review import Review
 
 
 class HBNBCommand(cmd.Cmd):
