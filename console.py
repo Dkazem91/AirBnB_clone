@@ -14,7 +14,8 @@ from models.review import Review
 
 class HBNBCommand(cmd.Cmd):
     prompt = '(hbnb)'
-    classes = {"BaseModel", "User", "State", "City", "Amenity", "Place", "Review"}
+    classes = {"BaseModel",
+               "User", "State", "City", "Amenity", "Place", "Review"}
 
     def do_quit(self, line):
         "Quit command to exit the program"
@@ -115,6 +116,11 @@ class HBNBCommand(cmd.Cmd):
     def emptyline(self):
         """passes"""
         pass
+
+    def default(self, line):
+        """defaults"""
+        strings = line.split('.')
+
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
