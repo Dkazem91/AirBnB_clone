@@ -2,7 +2,8 @@
 """entry point of the command interpreter"""
 import cmd
 import models
-from shlex import split
+import shlex
+from ast import literal_eval
 from models import storage
 from models.base_model import BaseModel
 from models.user import User
@@ -104,7 +105,7 @@ class HBNBCommand(cmd.Cmd):
         if len(arg) == 0:
             print("** class name missing **")
             return
-        strings = split(arg)
+        strings = shlex.split(arg)
         if strings[0] not in HBNBCommand.set_classes:
             print("** class doesn't exist **")
             return
@@ -130,6 +131,51 @@ class HBNBCommand(cmd.Cmd):
     def emptyline(self):
         pass
 
+    def new_strip(self, arg):
+        beg_paren = arg.find("(")
+        end_paren = arg.find(")")
+        new = arg[beg_paren + 1:end_paren]
+        new = new.split(", ")
+        new[0] = new[0].replace('"', '')
+        return new
+    
+    def count(self, arg):
+        count = 0
+        for value in storage.all().values():
+            if type(value).__name__ == arg:
+                count += 1
+        return count
+
+    def default(self, arg):
+        new_list = self.new_strip(arg)
+        arg_shlip = list(shlex.shlex(arg, posix=True))
+        print(new_list)
+        if arg_shlip[0] in HBNBCommand.set_classes:
+            if arg_shlip[2] == "all":
+                self.do_all(arg_shlip[0])
+                return
+            elif arg_shlip[2] == "count":
+                print(self.count(arg_shlip[0]))
+                return
+            elif arg_shlip[2] == "show":
+                key = arg_shlip[0] + " " + new_list[0]
+                self.do_show(key)
+                return
+            elif arg_shlip[2] == "destroy":
+                key = arg_shlip[0] + " " + new_list[0]
+                self.do_destroy(key)
+                return
+            elif arg_shlip[2] == "update":
+                print(new_list[1]+ new_list[2])
+                return
+        else:
+            print("*** Unknown syntax: {}".format(arg))
+            return
+
+            
+
+        
+        
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
