@@ -173,14 +173,14 @@ class HBNBCommand(cmd.Cmd):
                     new_command = arg_shlip[0] + " " + new_list[0] + " " + new_list[1] + " " + new_list[2]
                     self.do_update(new_command)
                     
-                except SyntaxError:
+                except:
                     obj = storage.all()[id_key]
                     reborn_dict = new_list[1] + ", " + new_list[2]
                     check = literal_eval(reborn_dict)
                     if (isinstance(check, dict)):
                         new_list[1] = check
                         new_list = new_list[:-1]
-                    for key, value in new_list[1]:
+                    for key, value in new_list[1].items():
                         setattr(obj, key, value)
         else:
             print("*** Unknown syntax: {}".format(arg))
