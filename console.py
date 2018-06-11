@@ -123,11 +123,10 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def stripper(self, st):
-#        newstring = st[st.find("(")+1:st.rfind(")")]
-#        newstring = shlex.shlex(newstring, posix=True)
-#        newstring.whitespace += ','
-#        newstring.whitespace_split = True
-        
+        newstring = st[st.find("(")+1:st.rfind(")")]
+        newstring = shlex.shlex(newstring, posix=True)
+        newstring.whitespace += ','
+        newstring.whitespace_split = True
         return list(newstring)
 
     def default(self, line):
