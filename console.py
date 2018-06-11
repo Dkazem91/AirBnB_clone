@@ -135,6 +135,7 @@ class HBNBCommand(cmd.Cmd):
         beg_paren = arg.find("(")
         end_paren = arg.find(")")
         new = arg[beg_paren + 1:end_paren]
+        
         new = new.split(", ")
         new[0] = new[0].replace('"', '')
         return new
@@ -180,16 +181,15 @@ class HBNBCommand(cmd.Cmd):
                     if (isinstance(check, dict)):
                         new_list[1] = check
                         new_list = new_list[:-1]
+                    else:
+                        print("Input a dictionary")
+                        return
                     for key, value in new_list[1].items():
                         setattr(obj, key, value)
         else:
             print("*** Unknown syntax: {}".format(arg))
             return
 
-            
-
-        
-        
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
