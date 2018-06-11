@@ -1,10 +1,12 @@
 #!/usr/bin/python3
 """entry point of the command interpreter"""
 import cmd
+import ast
 from models.base_model import BaseModel
 from models.user import User
 from models import storage
 from shlex import split
+import shlex
 from models.state import State
 from models.city import City
 from models.amenity import Amenity
@@ -111,27 +113,53 @@ class HBNBCommand(cmd.Cmd):
         if len(strings) == 3:
             print("** value missing **")
             return
-        setattr(storage.all()[keyValue], strings[2], strings[3])
+        try:
+            setattr(storage.all()[keyValue], strings[2], eval(strings[3]))
+        except:
+            setattr(storage.all()[keyValue], strings[2], strings[3])
 
     def emptyline(self):
         """passes"""
         pass
 
+    def stripper(self, st):
+#        newstring = st[st.find("(")+1:st.rfind(")")]
+#        newstring = shlex.shlex(newstring, posix=True)
+#        newstring.whitespace += ','
+#        newstring.whitespace_split = True
+        
+        return list(newstring)
+
     def default(self, line):
         """defaults"""
-        strings = line.split('.')
+        subArgs = self.stripper(line)
+        strings = list(shlex.shlex(line, posix=True))
         if strings[0] not in HBNBCommand.classes:
             print("*** Unknown syntax: {}".format(line))
             return
-        if strings[1] == "all()":
+        if strings[2] == "all":
             self.do_all(strings[0])
-        if strings[1] == "count()":
+        if strings[2] == "count":
             count = 0
             for obj in storage.all().values():
                 if strings[0] == type(obj).__name__:
                     count += 1
             print(count)
             return
+        if strings[2] == "show":
+            key = strings[0] + " " + subArgs[0]
+            self.do_show(key)
+        if strings[2] == "destroy":
+            key = strings[0] + " " + subArgs[0]
+            self.do_destroy(key)
+        if strings[2] == "update":
+            id_key = strings[0] + "." + subArgs[0]
+            reborn_dict = subArgs[1] + " " + subArgs[2]
+            print(reborn_dict)
+#            key = strings[0]
+ #           for arg in subArgs:
+  #              key = key + " " + '"{}"'.format(arg)
+   #         self.do_update(key)
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
