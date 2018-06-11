@@ -129,6 +129,14 @@ class HBNBCommand(cmd.Cmd):
         newstring.whitespace_split = True
         return list(newstring)
 
+    def dict_strip(self, st):
+        newstring = st[st.find("(")+1:st.rfind(")")]
+        try:
+            newdict = newstring[newstring.find("{")+1:newstring.rfind("}")]
+            return eval("{" + newdict + "}")
+        except:
+            return None
+
     def default(self, line):
         """defaults"""
         subArgs = self.stripper(line)
@@ -138,27 +146,34 @@ class HBNBCommand(cmd.Cmd):
             return
         if strings[2] == "all":
             self.do_all(strings[0])
-        if strings[2] == "count":
+        elif strings[2] == "count":
             count = 0
             for obj in storage.all().values():
                 if strings[0] == type(obj).__name__:
                     count += 1
             print(count)
             return
-        if strings[2] == "show":
+        elif strings[2] == "show":
             key = strings[0] + " " + subArgs[0]
             self.do_show(key)
-        if strings[2] == "destroy":
+        elif strings[2] == "destroy":
             key = strings[0] + " " + subArgs[0]
             self.do_destroy(key)
-        if strings[2] == "update":
-            id_key = strings[0] + "." + subArgs[0]
-            reborn_dict = subArgs[1] + " " + subArgs[2]
-            print(reborn_dict)
-#            key = strings[0]
- #           for arg in subArgs:
-  #              key = key + " " + '"{}"'.format(arg)
-   #         self.do_update(key)
+        elif strings[2] == "update":
+            newdict = self.dict_strip(line)
+            if type(newdict) is dict:
+                for key, val in newdict.items():
+                    keyVal = strings[0] + " " + subArgs[0]
+                    self.do_update(keyVal + ' "{}" "{}"'.format(key, val))
+            else:
+                key = strings[0]
+                for arg in subArgs:
+                    key = key + " " + '"{}"'.format(arg)
+                self.do_update(key)
+        else:
+            print("*** Unknown syntax: {}".format(line))
+            return
+
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
