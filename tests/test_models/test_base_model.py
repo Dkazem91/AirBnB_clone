@@ -2,6 +2,7 @@
 """Tests the basemodels"""
 import unittest
 import pep8
+from datetime import datetime
 from models.base_model import BaseModel
 from models.city import City
 from models.review import Review
@@ -89,6 +90,15 @@ class TestBaseModel(unittest.TestCase):
                          "[{}] ({}) {}".format("BaseModel",
                                                self.testBase.id,
                                                self.testBase.__dict__))
+    def test_todict(self):
+        test_dict = self.testBase.to_dict()
+        self.assertTrue(isinstance(test_dict, dict))
+        self.assertTrue(isinstance(test_dict['created_at'], str))
+        self.assertIsNotNone(test_dict['__class__'])
+
+    def test_save(self):
+        self.testBase.save()
+        self.assertTrue(self.testBase.updated_at != self.testBase.created_at)
 
 if __name__ == '__main__':
     unittest.main()
