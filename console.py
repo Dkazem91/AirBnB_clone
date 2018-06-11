@@ -123,6 +123,7 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def stripper(self, st):
+        """strips that line"""
         newstring = st[st.find("(")+1:st.rfind(")")]
         newstring = shlex.shlex(newstring, posix=True)
         newstring.whitespace += ','
@@ -130,6 +131,7 @@ class HBNBCommand(cmd.Cmd):
         return list(newstring)
 
     def dict_strip(self, st):
+        """tries to find a dict while stripping"""
         newstring = st[st.find("(")+1:st.rfind(")")]
         try:
             newdict = newstring[newstring.find("{")+1:newstring.rfind("}")]
