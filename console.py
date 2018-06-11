@@ -149,7 +149,6 @@ class HBNBCommand(cmd.Cmd):
     def default(self, arg):
         new_list = self.new_strip(arg)
         arg_shlip = list(shlex.shlex(arg, posix=True))
-        print(new_list)
         if arg_shlip[0] in HBNBCommand.set_classes:
             if arg_shlip[2] == "all":
                 self.do_all(arg_shlip[0])
@@ -166,8 +165,23 @@ class HBNBCommand(cmd.Cmd):
                 self.do_destroy(key)
                 return
             elif arg_shlip[2] == "update":
-                print(new_list[1]+ new_list[2])
-                return
+                id_key = arg_shlip[0] + "." + new_list[0]
+                try:
+                    literal_eval(new_list[1])
+                    new_list[1] = new_list[1].replace('"', '')
+                    new_list[2] = new_list[2].replace('"', '')
+                    new_command = arg_shlip[0] + " " + new_list[0] + " " + new_list[1] + " " + new_list[2]
+                    self.do_update(new_command)
+                    
+                except SyntaxError:
+                    obj = storage.all()[id_key]
+                    reborn_dict = new_list[1] + ", " + new_list[2]
+                    check = literal_eval(reborn_dict)
+                    if (isinstance(check, dict)):
+                        new_list[1] = check
+                        new_list = new_list[:-1]
+                    for key, value in new_list[1]:
+                        setattr(obj, key, value)
         else:
             print("*** Unknown syntax: {}".format(arg))
             return
