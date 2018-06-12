@@ -54,7 +54,6 @@ class TestBaseModel(unittest.TestCase):
         self.assertIsNotNone(test_dict['__class__'])
 
     def test_save(self):
-        time.sleep(2)
         self.testBase.save()
         self.assertTrue(self.testBase.updated_at != self.testBase.created_at)
 

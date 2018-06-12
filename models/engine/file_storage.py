@@ -34,6 +34,7 @@ class FileStorage:
             json.dump(jsonData, f)
 
     def reload(self):
+        """reloads"""
         try:
             with open(self.__file_path, 'r') as f:
                 data = json.load(f)
