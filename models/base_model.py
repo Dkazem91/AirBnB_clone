@@ -26,6 +26,10 @@ class BaseModel:
         return "[{}] ({}) {}".format(
             self.__class__.__name__, self.id, self.__dict__)
 
+    def __repr__(self):
+        """returns string function"""
+        return self.__str__()
+
     def save(self):
         """saves the class"""
         self.updated_at = datetime.now()
@@ -34,7 +38,7 @@ class BaseModel:
     def to_dict(self):
         """gives a dict of object"""
         copy = dict(self.__dict__)
-        copy['__class__'] = self.__class__.__name__
+        copy['__class__'] = str(self.__class__.__name__)
         copy['created_at'] = self.created_at.isoformat()
         copy['updated_at'] = self.updated_at.isoformat()
         return copy
