@@ -147,6 +147,15 @@ class HBNBCommand(cmd.Cmd):
                 count += 1
         return count
 
+    def dict_strip(self, st):
+        """tries to find a dict while stripping"""
+        newstring = st[st.find("(")+1:st.rfind(")")]
+        try:
+            newdict = newstring[newstring.find("{")+1:newstring.rfind("}")]
+            return eval("{" + newdict + "}")
+        except:
+            return None
+
     def default(self, arg):
         new_list = self.new_strip(arg)
         arg_shlip = list(shlex.shlex(arg, posix=True))
@@ -176,11 +185,9 @@ class HBNBCommand(cmd.Cmd):
                     
                 except:
                     obj = storage.all()[id_key]
-                    reborn_dict = new_list[1] + ", " + new_list[2]
-                    check = literal_eval(reborn_dict)
+                    check = self.dict_strip(arg)
                     if (isinstance(check, dict)):
                         new_list[1] = check
-                        new_list = new_list[:-1]
                     else:
                         print("Input a dictionary")
                         return
