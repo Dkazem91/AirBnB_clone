@@ -1,39 +1,23 @@
 #!/usr/bin/python3
 """Tests the basemodels"""
 import unittest
-import pep8
 import os
-import time
-from datetime import datetime
+import pep8
 from models.base_model import BaseModel
-from models.city import City
-from models.review import Review
-from models.amenity import Amenity
-from models.state import State
-from models.place import Place
 
 class TestBaseModel(unittest.TestCase):
-    """unittests for basemodel"""
-
+    """tests for basemodel"""
     @classmethod
-    def setUp(cls):
-        """creates class"""
+    def setUpClass(cls):
+        """sets up"""
         cls.testBase = BaseModel()
-        cls.testCity = City()
-        cls.testReview = Review()
-        cls.testAmenity = Amenity()
-        cls.testState = State()
-        cls.testPlace = Place()
+        cls.testBase.x = "x"
+        cls.testBase.y = "y"
 
     @classmethod
-    def tearDown(cls):
-        """deletes test class"""
+    def tearDownClass(cls):
+        """tears down"""
         del cls.testBase
-        cls.testCity = City()
-        cls.testReview = Review()
-        cls.testAmenity = Amenity()
-        cls.testState = State()
-        cls.testPlace = Place()
         try:
             os.remove("file.json")
         except:
@@ -42,75 +26,31 @@ class TestBaseModel(unittest.TestCase):
     def test_pep8(self):
         """tests pep8"""
         style = pep8.StyleGuide(quiet=True)
-        p = style.check_files(['models/base_model.py', 'models/city.py',
-                               'models/review.py', 'models/state.py',
-                               'models/place.py', 'models/amenity.py'])
+        p = style.check_files(['models/base_model.py'])
         self.assertEqual(p.total_errors, 0, "fix pep8")
 
     def test_docstrings(self):
-        """tests docstrings"""
         self.assertTrue(len(BaseModel.__doc__) > 0)
         for func in dir(BaseModel):
             self.assertTrue(len(func.__doc__) > 0)
-        for func in dir(City):
-            self.assertTrue(len(func.__doc__) > 0)
-        for func in dir(State):
-            self.assertTrue(len(func.__doc__) > 0)
-        for func in dir(Review):
-            self.assertTrue(len(func.__doc__) > 0)
-        for func in dir(Place):
-            self.assertTrue(len(func.__doc__) > 0)
-        for func in dir(Amenity):
-            self.assertTrue(len(func.__doc__) > 0)
 
-    def test_init_and_class_variables(self):
-        """tests init and class variables"""
-        self.assertTrue(isinstance(self.testBase, BaseModel))
-        self.assertTrue(self.testBase.created_at == self.testBase.updated_at)
+    def test_attributes_init(self):
         self.assertTrue(hasattr(BaseModel, "__init__"))
-        self.assertTrue(hasattr(BaseModel, "__str__"))
         self.assertTrue(hasattr(BaseModel, "save"))
         self.assertTrue(hasattr(BaseModel, "to_dict"))
-        self.assertTrue(isinstance(self.testCity, City))
-        self.assertTrue(isinstance(self.testState, State))
-        self.assertTrue(isinstance(self.testReview, Review))
-        self.assertTrue(isinstance(self.testPlace, Place))
-        self.assertTrue(isinstance(self.testAmenity, Amenity))
-        self.assertTrue(self.testCity.state_id == "")
-        self.assertTrue(self.testCity.name == "")
-        self.assertTrue(self.testState.name == "")
-        self.assertTrue(self.testAmenity.name == "")
-        self.assertTrue(self.testPlace.city_id == "")
-        self.assertTrue(self.testPlace.user_id == "")
-        self.assertTrue(self.testPlace.name == "")
-        self.assertTrue(self.testPlace.description == "")
-        self.assertTrue(self.testPlace.number_rooms == 0)
-        self.assertTrue(self.testPlace.number_bathrooms == 0)
-        self.assertTrue(self.testPlace.max_guest == 0)
-        self.assertTrue(self.testPlace.price_by_night == 0)
-        self.assertTrue(self.testPlace.latitude == 0)
-        self.assertTrue(self.testPlace.longitude == 0)
-        self.assertTrue(self.testPlace.amenity_ids == "")
-        self.assertTrue(self.testReview.place_id == "")
-        self.assertTrue(self.testReview.user_id == "")
-        self.assertTrue(self.testReview.text == "")
-
-    def test_str(self):
-        self.assertEqual(self.testBase.__str__(),
-                         "[{}] ({}) {}".format("BaseModel",
-                                               self.testBase.id,
-                                               self.testBase.__dict__))
-
-    def test_todict(self):
-        test_dict = self.testBase.to_dict()
-        self.assertTrue(isinstance(test_dict, dict))
-        self.assertTrue(isinstance(test_dict['created_at'], str))
-        self.assertIsNotNone(test_dict['__class__'])
+        self.assertTrue(isinstance(self.testBase, BaseModel))
+        self.assertTrue(self.testBase.created_at == self.testBase.updated_at)
 
     def test_save(self):
         self.testBase.save()
-        self.assertTrue(self.testBase.updated_at != self.testBase.created_at)
+        self.assertNotEqual(self.testBase.created_at, self.testBase.updated_at)
+
+    def test_to_dict(self):
+        copy = self.testBase.to_dict()
+        self.assertEqual(self.testBase.__class__.__name__, "BaseModel")
+        self.assertIsInstance(copy['created_at'], str)
+        self.assertIsInstance(copy['updated_at'], str)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()
