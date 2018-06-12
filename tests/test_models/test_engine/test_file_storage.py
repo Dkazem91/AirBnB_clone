@@ -30,6 +30,10 @@ class TestFileStorage(unittest.TestCase):
     def tearDown(cls):
         del cls.users
         del cls.storage
+        try:
+            os.remove("file.json")
+        except:
+            pass
 
     def test_style_check(self):
         """tests for pep8"""
@@ -50,10 +54,10 @@ class TestFileStorage(unittest.TestCase):
         storage_dict = self.storage.all()
         basic = BaseModel()
         self.storage.new(basic)
-        key = type(basic).__name__ + "." + str(basic.id)
+        key = basic.__class__.__name__ + "." + str(basic.id)
         self.assertIsNotNone(storage_dict[key])
 
-        key = type(self.users).__name__ + "." + str(self.users.id)
+        key = self.users.__class__.__name__ + "." + str(self.users.id)
         self.assertIsNotNone(storage_dict[key])
 
     def test_all(self):
