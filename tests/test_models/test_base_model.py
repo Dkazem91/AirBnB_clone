@@ -5,6 +5,7 @@ import os
 import pep8
 from models.base_model import BaseModel
 
+
 class TestBaseModel(unittest.TestCase):
     """tests for basemodel"""
     @classmethod
@@ -12,7 +13,7 @@ class TestBaseModel(unittest.TestCase):
         """sets up"""
         cls.testBase = BaseModel()
         cls.testBase.x = "x"
-        cls.testBase.y = "y"
+        cls.testBase.y = 100
 
     @classmethod
     def tearDownClass(cls):
@@ -34,12 +35,14 @@ class TestBaseModel(unittest.TestCase):
         for func in dir(BaseModel):
             self.assertTrue(len(func.__doc__) > 0)
 
-    def test_attributes_init(self):
+    def test_functions(self):
         self.assertTrue(hasattr(BaseModel, "__init__"))
         self.assertTrue(hasattr(BaseModel, "save"))
         self.assertTrue(hasattr(BaseModel, "to_dict"))
-        self.assertTrue(isinstance(self.testBase, BaseModel))
         self.assertTrue(self.testBase.created_at == self.testBase.updated_at)
+
+    def test_init(self):
+        self.assertTrue(isinstance(self.testBase, BaseModel))
 
     def test_save(self):
         self.testBase.save()
