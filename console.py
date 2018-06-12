@@ -3,6 +3,7 @@
 import cmd
 import models
 import shlex
+import re
 from ast import literal_eval
 from models import storage
 from models.base_model import BaseModel
@@ -147,14 +148,16 @@ class HBNBCommand(cmd.Cmd):
                 count += 1
         return count
 
-    def dict_strip(self, st):
-        """tries to find a dict while stripping"""
-        newstring = st[st.find("(")+1:st.rfind(")")]
+    def dict_strip_new(self, in_str):
+        """alt method of finding dictionary using regex"""
+        regex = re.compile(r"\{.*\}")
+        parsed_dict = regex.findall(in_str)
         try:
-            newdict = newstring[newstring.find("{")+1:newstring.rfind("}")]
-            return eval("{" + newdict + "}")
+            parsed = literal_eval(parsed_dict[0])
         except:
+            print("Wrong Syntax")
             return None
+        return parsed
 
     def default(self, arg):
         new_list = self.new_strip(arg)
@@ -177,15 +180,18 @@ class HBNBCommand(cmd.Cmd):
             elif arg_shlip[2] == "update":
                 id_key = arg_shlip[0] + "." + new_list[0]
                 try:
-                    literal_eval(new_list[1])
+                    test = literal_eval(new_list[1])
+                    if isinstance(test, dict):
+                        raise BaseException
                     new_list[1] = new_list[1].replace('"', '')
                     new_list[2] = new_list[2].replace('"', '')
                     new_command = arg_shlip[0] + " " + new_list[0] + " " + new_list[1] + " " + new_list[2]
+                    print (new_command)
                     self.do_update(new_command)
                     
                 except:
                     obj = storage.all()[id_key]
-                    check = self.dict_strip(arg)
+                    check = self.dict_strip_new(arg)
                     if (isinstance(check, dict)):
                         new_list[1] = check
                     else:
