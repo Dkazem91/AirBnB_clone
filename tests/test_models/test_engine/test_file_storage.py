@@ -30,8 +30,6 @@ class TestFileStorage(unittest.TestCase):
         del cls.bs
         del cls.storage
         del cls.storage2
-
-    def teardown(self):
         try:
             os.remove("file.json")
         except:
@@ -63,11 +61,16 @@ class TestFileStorage(unittest.TestCase):
 
     def test_reload_and_save(self):
         """tests fileself.storage reload function and save"""
+        try:
+            with open("file.json", "r") as r:
+                r.write("{}")
+        except:
+            pass
         self.storage.new(self.bs)
         self.storage.save()
         key = self.bs.__class__.__name__ + '.' + self.bs.id
         test = {key: self.bs.to_dict()}
         with open("file.json", "r") as r:
-            self.assertTrue(json.load(r) == test)
+            self.assertEqual(json.load(r), test)
         self.storage2.reload()
         self.assertTrue(self.storage2.all() == self.storage.all())
