@@ -19,6 +19,7 @@ class TestFileStorage(unittest.TestCase):
 
     @classmethod
     def setUp(cls):
+        """set up before each function"""
         cls.users = User()
         cls.users.email = "307@holbertonschool.classmethod"
         cls.users.password = "12345789"
@@ -28,11 +29,19 @@ class TestFileStorage(unittest.TestCase):
 
     @classmethod
     def tearDown(cls):
+        """tear down protocol"""
         del cls.users
         del cls.storage
         try:
             os.remove("file.json")
-        except:
+        except BaseException:
+            pass
+
+    def teardown(self):
+        """teardown"""
+        try:
+            os.remove("file.json")
+        except BaseException:
             pass
 
     def test_style_check(self):
@@ -67,8 +76,8 @@ class TestFileStorage(unittest.TestCase):
         self.assertEqual(type(object_dict), dict)
         self.assertIs(object_dict, self.storage._FileStorage__objects)
 
-
     def test_save_reload(self):
+        """tests reload"""
         self.storage.save()
         Root = os.path.dirname(os.path.abspath("console.py"))
         path = os.path.join(Root, "file.json")
@@ -76,7 +85,7 @@ class TestFileStorage(unittest.TestCase):
             lines = f.readlines()
 
         try:
-            os.remove("file.json")
+            os.remove(path)
         except BaseException:
             pass
 
@@ -88,7 +97,7 @@ class TestFileStorage(unittest.TestCase):
         self.assertEqual(lines, lines2)
 
         try:
-            os.remove("file.json")
+            os.remove(path)
         except BaseException:
             pass
 
@@ -98,3 +107,7 @@ class TestFileStorage(unittest.TestCase):
             for line in r:
                 self.assertEqual(line, "{}")
         self.assertIs(self.storage.reload(), None)
+
+
+if __name__ == "__main__":
+    unittest.main()
