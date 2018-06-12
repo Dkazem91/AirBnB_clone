@@ -193,6 +193,9 @@ class HBNBCommand(cmd.Cmd):
                         return
                     for key, value in new_list[1].items():
                         setattr(obj, key, value)
+            else:
+                print("*** Unknown syntax: {}".format(arg))
+                return
         else:
             print("*** Unknown syntax: {}".format(arg))
             return
