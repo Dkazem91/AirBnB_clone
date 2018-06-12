@@ -35,6 +35,6 @@ class BaseModel:
         """gives a dict of object"""
         copy = dict(self.__dict__)
         copy['__class__'] = self.__class__.__name__
-        copy['created_at'] = str(self.created_at.isoformat())
-        copy['updated_at'] = str(self.updated_at.isoformat())
+        copy['created_at'] = self.created_at.isoformat()
+        copy['updated_at'] = self.updated_at.isoformat()
         return copy
