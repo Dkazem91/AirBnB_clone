@@ -11,6 +11,7 @@ from models.review import Review
 
 
 class FileStorage:
+    """file storage creation"""
     __file_path = "file.json"
     __objects = {}
 
