@@ -2,6 +2,7 @@
 """Tests the basemodels"""
 import unittest
 import pep8
+import os
 from datetime import datetime
 from models.base_model import BaseModel
 from models.city import City
@@ -32,6 +33,10 @@ class TestBaseModel(unittest.TestCase):
         del cls.testAmenity
         del cls.testState
         del cls.testPlace
+        try:
+            os.remove("file.json")
+        except:
+            pass
 
     def test_pep8(self):
         """tests pep8"""
@@ -65,7 +70,6 @@ class TestBaseModel(unittest.TestCase):
         self.assertTrue(isinstance(self.testReview, Review))
         self.assertTrue(isinstance(self.testPlace, Place))
         self.assertTrue(isinstance(self.testAmenity, Amenity))
-        self.assertTrue(self.testBase.created_at == self.testBase.updated_at)
         self.assertTrue(self.testCity.state_id == "")
         self.assertTrue(self.testCity.name == "")
         self.assertTrue(self.testState.name == "")
