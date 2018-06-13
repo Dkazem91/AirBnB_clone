@@ -1,83 +1,79 @@
 #!/usr/bin/python3
-"""Unittest to test file storage"""
+"""
+Unittest to test FileStorage class
+"""
 import unittest
 import pep8
 import json
 import os
 from models.base_model import BaseModel
 from models.user import User
-from models.engine.file_storage import FileStorage
 from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.place import Place
 from models.review import Review
+from models.engine.file_storage import FileStorage
 
 
 class TestFileStorage(unittest.TestCase):
-    """testing file storage functions"""
+    """
+    testing file storage
+    """
 
     @classmethod
-    def setUp(cls):
-        """set up before each function"""
-        cls.users = User()
-        cls.users.email = "307@holbertonschool.classmethod"
-        cls.users.password = "12345789"
-        cls.users.first_name = "Andrew"
-        cls.users.last_name = "Suh"
+    def setUpClass(cls):
+        cls.usr = User()
+        cls.usr.first_name = "Andrew"
+        cls.usr.last_name = "Suh"
+        cls.usr.email = "andrew@gmail.com"
         cls.storage = FileStorage()
 
     @classmethod
-    def tearDown(cls):
-        """tear down protocol"""
-        del cls.users
-        del cls.storage
-        try:
-            os.remove("file.json")
-        except BaseException:
-            pass
+    def teardown(cls):
+        del cls.usr
 
     def teardown(self):
-        """teardown"""
         try:
             os.remove("file.json")
-        except BaseException:
+        except:
             pass
 
     def test_style_check(self):
-        """tests for pep8"""
+        """
+        tests for pep8
+        """
         style = pep8.StyleGuide(quiet=True)
         p = style.check_files(['models/engine/file_storage.py'])
         self.assertEqual(p.total_errors, 0, "fix pep8")
 
-    def test_user_doc(self):
-        """check for existance of docstrings"""
-        self.assertIsNotNone(User.__doc__)
-        self.assertIsNotNone(User.__init__.__doc__)
-        self.assertIsNotNone(User.__str__.__doc__)
-        self.assertIsNotNone(User.save.__doc__)
-        self.assertIsNotNone(User.to_dict.__doc__)
+    def test_all(self):
+        """
+        tests for all
+        """
+        new = FileStorage()
+        instances_dic = new.all()
+        self.assertIsNotNone(instances_dic)
+        self.assertEqual(type(instances_dic), dict)
+        self.assertIs(instances_dic, new._FileStorage__objects)
 
     def test_new(self):
-        """Tests making new instances"""
-        storage_dict = self.storage.all()
-        basic = BaseModel()
-        self.storage.new(basic)
-        key = basic.__class__.__name__ + "." + str(basic.id)
-        self.assertIsNotNone(storage_dict[key])
+        """
+        tests for new
+        """
+        altsotrage = FileStorage()
+        dic = altsotrage.all()
+        rev = User()
+        rev.id = 69
+        rev.name = "Meep"
+        altsotrage.new(rev)
+        key = rev.__class__.__name__ + "." + str(rev.id)
+        self.assertIsNotNone(dic[key])
 
-        key = self.users.__class__.__name__ + "." + str(self.users.id)
-        self.assertIsNotNone(storage_dict[key])
-
-    def test_all(self):
-        """Test if obj is loaded to obj dict"""
-        object_dict = self.storage.all()
-        self.assertIsNotNone(object_dict)
-        self.assertEqual(type(object_dict), dict)
-        self.assertIs(object_dict, self.storage._FileStorage__objects)
-
-    def test_save_reload(self):
-        """tests reload"""
+    def test_reload(self):
+        """
+        tests reload
+        """
         self.storage.save()
         Root = os.path.dirname(os.path.abspath("console.py"))
         path = os.path.join(Root, "file.json")
@@ -86,7 +82,7 @@ class TestFileStorage(unittest.TestCase):
 
         try:
             os.remove(path)
-        except BaseException:
+        except:
             pass
 
         self.storage.save()
@@ -98,7 +94,7 @@ class TestFileStorage(unittest.TestCase):
 
         try:
             os.remove(path)
-        except BaseException:
+        except:
             pass
 
         with open(path, "w") as f:
@@ -107,7 +103,3 @@ class TestFileStorage(unittest.TestCase):
             for line in r:
                 self.assertEqual(line, "{}")
         self.assertIs(self.storage.reload(), None)
-
-
-if __name__ == "__main__":
-    unittest.main()
