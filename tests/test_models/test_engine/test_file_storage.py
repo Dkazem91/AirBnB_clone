@@ -18,59 +18,73 @@ class TestFileStorage(unittest.TestCase):
     """testing file storage functions"""
 
     @classmethod
-    def setUpClass(cls):
-        cls.bs = BaseModel()
-        cls.bs.first_name = "johnny"
-        cls.bs.age = "5"
-        cls.storage = FileStorage()
-        cls.storage2 = FileStorage()
+    def setUp(cls):
+         cls.users = User()
+         cls.users.email = "307@holbertonschool.classmethod"
+         cls.users.password = "12345789"
+         cls.users.first_name = "Andrew"
+         cls.users.last_name = "Suh"
+         cls.storage = FileStorage()
 
     @classmethod
-    def teardown(cls):
-        del cls.bs
+    def tearDown(cls):
+        del cls.users
         del cls.storage
-        del cls.storage2
+
+    def test_style_check(self):
+        """
+        Tests pep8 style
+        """
+        style = pep8.StyleGuide(quiet=True)
+        p = style.check_files(['models/engine/file_storage.py'])
+        self.assertEqual(p.total_errors, 0, "fix pep8")
+
+    def test_user_doc(self):
+        """check for existance of docstrings"""
+        self.assertIsNotNone(User.__doc__)
+        self.assertIsNotNone(User.__init__.__doc__)
+        self.assertIsNotNone(User.__str__.__doc__)
+        self.assertIsNotNone(User.save.__doc__)
+        self.assertIsNotNone(User.to_dict.__doc__)
+    
+    def test_new_object(self):
+        """Tests making new instances"""
+        storage_dict = self.storage.all()
+        basic = BaseModel()
+        self.storage.new(basic)
+        key = type(basic).__name__ + "." + str(basic.id)
+        self.assertIsNotNone(storage_dict[key])
+
+        key = type(self.users).__name__ + "." + str(self.users.id)
+        self.assertIsNotNone(storage_dict[key])
+
+    def test_save_reload(self):
+        self.storage.save()
+        Root = os.path.dirname(os.path.abspath("console.py"))
+        path = os.path.join(Root, "file.json")
+        with open(path, 'r') as f:
+            lines = f.readlines()
+        
         try:
             os.remove("file.json")
         except:
             pass
 
-    def test_pep8(self):
-        """tests pep8"""
-        style = pep8.StyleGuide(quiet=True)
-        p = style.check_files(['models/engine/file_storage.py'])
-        self.assertEqual(p.total_errors, 0, "fix pep8")
+        self.storage.save()
 
-    def test_docstring(self):
-        """tests docstrings"""
-        self.assertTrue(len(FileStorage.__doc__) > 0)
-        for func in dir(FileStorage):
-            self.assertTrue(len(func.__doc__) > 0)
+        with open(path, 'r') as f:
+            lines2 = f.readlines()
 
-    def test_all(self):
-        """tests filestorage all function"""
-        self.assertIsNotNone(self.storage.all())
-        self.assertEqual(type(self.storage.all()), dict)
-        self.assertIs(self.storage.all(), self.storage._FileStorage__objects)
+        self.assertEqual(lines, lines2)
 
-    def test_new(self):
-        """tests filestorage new function"""
-        self.storage.new(self.bs)
-        key = self.bs.__class__.__name__ + '.' + self.bs.id
-        self.assertIsNotNone(self.storage.all()[key])
-
-    def test_reload_and_save(self):
-        """tests fileself.storage reload function and save"""
         try:
-            with open("file.json", "r") as r:
-                r.write("{}")
+            os.remove("file.json")
         except:
             pass
-        self.storage.new(self.bs)
-        self.storage.save()
-        key = self.bs.__class__.__name__ + '.' + self.bs.id
-        test = {key: self.bs.to_dict()}
-        with open("file.json", "r") as r:
-            self.assertEqual(json.load(r), test)
-        self.storage2.reload()
-        self.assertTrue(self.storage2.all() == self.storage.all())
+
+        with open(path, "w") as f:
+            f.write("{}")
+        with open(path, "r") as r:
+            for line in r:
+                self.assertEqual(line, "{}")
+        self.assertIs(self.storage.reload(), None)
