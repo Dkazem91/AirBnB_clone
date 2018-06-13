@@ -19,12 +19,12 @@ class TestFileStorage(unittest.TestCase):
 
     @classmethod
     def setUp(cls):
-         cls.users = User()
-         cls.users.email = "307@holbertonschool.classmethod"
-         cls.users.password = "12345789"
-         cls.users.first_name = "Andrew"
-         cls.users.last_name = "Suh"
-         cls.storage = FileStorage()
+        cls.users = User()
+        cls.users.email = "307@holbertonschool.classmethod"
+        cls.users.password = "12345789"
+        cls.users.first_name = "Andrew"
+        cls.users.last_name = "Suh"
+        cls.storage = FileStorage()
 
     @classmethod
     def tearDown(cls):
@@ -46,7 +46,7 @@ class TestFileStorage(unittest.TestCase):
         self.assertIsNotNone(User.__str__.__doc__)
         self.assertIsNotNone(User.save.__doc__)
         self.assertIsNotNone(User.to_dict.__doc__)
-    
+
     def test_new_object(self):
         """Tests making new instances"""
         storage_dict = self.storage.all()
@@ -64,10 +64,10 @@ class TestFileStorage(unittest.TestCase):
         path = os.path.join(Root, "file.json")
         with open(path, 'r') as f:
             lines = f.readlines()
-        
+
         try:
             os.remove("file.json")
-        except:
+        except BaseException:
             pass
 
         self.storage.save()
@@ -79,7 +79,7 @@ class TestFileStorage(unittest.TestCase):
 
         try:
             os.remove("file.json")
-        except:
+        except BaseException:
             pass
 
         with open(path, "w") as f:
