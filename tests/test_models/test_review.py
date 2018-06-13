@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""test for review"""
+"""tests for class review"""
 import unittest
 import os
 from models.review import Review
@@ -16,7 +16,7 @@ class TestReview(unittest.TestCase):
         cls.newreview = Review()
         cls.newreview.place_id = "7272728"
         cls.newreview.user_id = "Lul"
-        cls.newreview.text = "Place sucked"
+        cls.newreview.text = "Place is meh"
 
     @classmethod
     def teardown(cls):
@@ -59,12 +59,12 @@ class TestReview(unittest.TestCase):
         self.assertEqual(type(self.newreview.place_id), str)
         self.assertEqual(type(self.newreview.user_id), str)
 
-    def test_save_Review(self):
+    def test_save(self):
         """test save function"""
         self.newreview.save()
         self.assertNotEqual(self.newreview.created_at, self.newreview.updated_at)
 
-    def test_to_dict_Review(self):
+    def test_to_dict(self):
         """test dictionary is there"""
         self.assertEqual('to_dict' in dir(self.newreview), True)
 
