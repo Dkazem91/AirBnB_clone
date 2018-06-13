@@ -39,7 +39,7 @@ class TestFileStorage(unittest.TestCase):
         except:
             pass
 
-    def test_style_check(self):
+    def test_pep8_filestorage(self):
         """
         tests for pep8
         """
@@ -47,7 +47,7 @@ class TestFileStorage(unittest.TestCase):
         p = style.check_files(['models/engine/file_storage.py'])
         self.assertEqual(p.total_errors, 0, "fix pep8")
 
-    def test_all(self):
+    def test_all_filestorage(self):
         """
         tests for all
         """
@@ -57,7 +57,7 @@ class TestFileStorage(unittest.TestCase):
         self.assertEqual(type(instances_dic), dict)
         self.assertIs(instances_dic, new._FileStorage__objects)
 
-    def test_new(self):
+    def test_new_filestorage(self):
         """
         tests for new
         """
@@ -70,7 +70,7 @@ class TestFileStorage(unittest.TestCase):
         key = rev.__class__.__name__ + "." + str(rev.id)
         self.assertIsNotNone(dic[key])
 
-    def test_reload(self):
+    def test_reload_filestorage(self):
         """
         tests reload
         """
