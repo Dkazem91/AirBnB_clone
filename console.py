@@ -77,16 +77,14 @@ class HBNBCommand(cmd.Cmd):
     def do_all(self, line):
         """prints all"""
         if not len(line):
-            for obj in storage.all().values():
-                print(obj)
+            print([obj for obj in storage.all().values()])
             return
         strings = split(line)
         if strings[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        for obj in storage.all().values():
-            if strings[0] == type(obj).__name__:
-                print(obj)
+        print([obj for obj in storage.all().values()
+               if strings[0] == type(obj).__name__])
 
     def do_update(self, line):
         """updates an object"""
