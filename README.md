@@ -8,7 +8,7 @@
 * Create all unittests to validate all our classes and storage engine
 ### How to use it:
 1. Start up the console by typing `./console`.
-2. Type 'help' to see what commands are available.
+2. Type `help` to see what commands are available.
 ### Examples:
 ```
 (hbnb)create BaseModel
