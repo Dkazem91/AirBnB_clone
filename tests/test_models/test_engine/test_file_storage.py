@@ -45,7 +45,7 @@ class TestFileStorage(unittest.TestCase):
         self.assertIsNotNone(User.save.__doc__)
         self.assertIsNotNone(User.to_dict.__doc__)
 
-    def test_all(self):
+    def test_new(self):
         """Tests making new instances"""
         storage_dict = self.storage.all()
         basic = BaseModel()
@@ -55,6 +55,14 @@ class TestFileStorage(unittest.TestCase):
 
         key = type(self.users).__name__ + "." + str(self.users.id)
         self.assertIsNotNone(storage_dict[key])
+
+    def test_all(self):
+        """Test if obj is loaded to obj dict"""
+        object_dict = self.storage.all()
+        self.assertIsNotNone(object_dict)
+        self.assertEqual(type(object_dict), dict)
+        self.assertIs(object_dict, self.storage._FileStorage__objects)
+
 
     def test_save_reload(self):
         self.storage.save()
