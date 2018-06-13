@@ -35,6 +35,13 @@ class TestFileStorage(unittest.TestCase):
         except:
             pass
 
+    def teardown(self):
+        """teardown"""
+        try:
+            os.remove("file.json")
+        except:
+            pass
+
     def test_style_check(self):
         """tests for pep8"""
         style = pep8.StyleGuide(quiet=True)
@@ -76,7 +83,7 @@ class TestFileStorage(unittest.TestCase):
             lines = f.readlines()
 
         try:
-            os.remove("file.json")
+            os.remove(path)
         except BaseException:
             pass
 
@@ -88,7 +95,7 @@ class TestFileStorage(unittest.TestCase):
         self.assertEqual(lines, lines2)
 
         try:
-            os.remove("file.json")
+            os.remove(path)
         except BaseException:
             pass
 
