@@ -32,9 +32,7 @@ class TestFileStorage(unittest.TestCase):
         del cls.storage
 
     def test_style_check(self):
-        """
-        Tests pep8 style
-        """
+        """tests for pep8"""
         style = pep8.StyleGuide(quiet=True)
         p = style.check_files(['models/engine/file_storage.py'])
         self.assertEqual(p.total_errors, 0, "fix pep8")
@@ -47,7 +45,7 @@ class TestFileStorage(unittest.TestCase):
         self.assertIsNotNone(User.save.__doc__)
         self.assertIsNotNone(User.to_dict.__doc__)
 
-    def test_new_object(self):
+    def test_all(self):
         """Tests making new instances"""
         storage_dict = self.storage.all()
         basic = BaseModel()
