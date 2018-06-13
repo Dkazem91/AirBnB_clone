@@ -6,6 +6,7 @@ import pep8
 from models.place import Place
 from models.base_model import BaseModel
 
+
 class TestPlace(unittest.TestCase):
     """tests for place file"""
     @classmethod
@@ -81,9 +82,10 @@ class TestPlace(unittest.TestCase):
         self.testPlace.save()
         self.assertNotEqual(self.testPlace.created_at,
                             self.testPlace.updated_at)
+
     def test_dict(self):
         self.assertEqual('to_dict' in dir(self.testPlace), True)
 
 
-if __name__== "__main__":
+if __name__ == "__main__":
     unittest.main()

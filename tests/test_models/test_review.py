@@ -62,11 +62,13 @@ class TestReview(unittest.TestCase):
     def test_save(self):
         """test save function"""
         self.newreview.save()
-        self.assertNotEqual(self.newreview.created_at, self.newreview.updated_at)
+        self.assertNotEqual(self.newreview.created_at,
+                            self.newreview.updated_at)
 
     def test_to_dict(self):
         """test dictionary is there"""
         self.assertEqual('to_dict' in dir(self.newreview), True)
+
 
 if __name__ == "__main__":
     unittest.main()
