@@ -13,4 +13,3 @@
 
 <a href="https://htmlpreview.github.io/?https://github.com/Dkazem91/AirBnB_clone/blob/master/web_static/6-index.html" target="_blank">[6 preview]</a>
 
-<a href="https://htmlpreview.github.io/?https://github.com/Dkazem91/AirBnB_clone/blob/master/web_static/7-index.html" target="_blank">[7 preview]</a>
