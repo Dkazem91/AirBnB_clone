@@ -1,0 +1,82 @@
+button{
+    height:48px;
+    width:20%;
+    position:absolute;
+    right:30px;
+    font-size:18px;
+    background-color:#FF5A5F;
+    color:#FFFFFF;
+    border:none;
+    border-radius: 4px;
+}
+.filters{
+    background-color:white;
+    height:70px;
+    width:100%;
+    border: 1px solid #DDDDDD;
+    display:flex;
+    align-items:center;
+    position:relative;
+}
+button:hover{
+    opacity:.9;
+}
+.locations,
+.amenities {
+    height: 100%;
+    width: 25%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position:relative;
+}
+.locations {
+    border-right: 1px solid #dddddd;
+}
+.locations h3,
+.amenities h3 {
+    font-weight: 600;
+    margin:0;
+}
+.locations h4,
+.amenities h4 {
+    font-weight: 400;
+    font-size: 14px;
+    margin: 0;
+}
+.h3h4 {
+    width: 70%;
+}
+.wrapper {
+    width: 100%;
+    position: absolute;
+    top: 100%;
+    border: 1px solid #dddddd;
+    background-color: #fafafa;
+    display: none;
+}
+.popover > li {
+    padding: 5%;
+    list-style: none;
+}
+.wrapper li h2 {
+    margin-left: -8%;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+.popover2 li {
+    padding: 2%;
+}
+.popover2 {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    margin-left: -25%;
+}
+.locations:hover .wrapper {
+    display: flex;
+}
+.amenities:hover .wrapper {
+    display: flex;
+}
