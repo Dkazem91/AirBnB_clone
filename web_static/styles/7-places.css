@@ -1,0 +1,29 @@
+.places{
+    width:100%;
+    display:flex;
+    flex-direction:column;
+}
+.artRow{
+    display:flex;
+    justify-content:center;
+}
+.places h1{
+    margin-left:2%;
+    font-size:30px;
+}
+.artRow{
+    margin:0 auto;
+    margin-top:-1%;
+}
+article{
+    width:390px;
+    padding:20px;
+    margin:20px;
+    border:1px solid #FF5A5F;
+    border-radius:4px;
+    font-size:30px;
+}
+article h2{
+    margin:0 auto;
+    text-align:center;
+}
