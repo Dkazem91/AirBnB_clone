@@ -53,6 +53,7 @@ button:hover{
     position: absolute;
     top: 100%;
     border: 1px solid #dddddd;
+    border-radius:4px;
     background-color: #fafafa;
     display: none;
 }
